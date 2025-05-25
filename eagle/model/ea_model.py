@@ -94,6 +94,8 @@ class EaModel(nn.Module):
             depth=7,
             top_k=10,
             threshold=1.0,
+            attn_implementation="flash_attention_2",
+            trust_remote_code=True,
             **kwargs,
     ):
         # assert Type=="LLaMA" or "Mixtral"
