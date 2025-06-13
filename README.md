@@ -101,6 +101,7 @@ EAGLE has been merged in the following mainstream LLM serving frameworks (listed
 - [x] Support Qwen-2.
 - [x] Support vLLM (please check <a href="https://github.com/vllm-project/vllm/pull/6830">vLLM</a>'s implementation).
 - [x] EAGLE-3.
+- [x] Training code of EAGLE-3.
 - [ ] Support LLaMA-4.
 - [ ] Support Qwen-3.
 
@@ -137,6 +138,7 @@ pip install -r requirements.txt
 |-----------------------|-------------------------------------------------------------------------------------|------------------------------|-------------------------------------------------------------------------------------|
 | [lmsys/vicuna-13b-v1.3](https://huggingface.co/lmsys/vicuna-13b-v1.3)       | [yuhuili/EAGLE3-Vicuna1.3-13B](https://huggingface.co/yuhuili/EAGLE3-Vicuna1.3-13B) | [meta-llama/Llama-3.1-8B-Instruct](https://huggingface.co/meta-llama/Llama-3.1-8B-Instruct)         | [yuhuili/EAGLE3-LLaMA3.1-Instruct-8B](https://huggingface.co/yuhuili/EAGLE3-LLaMA3.1-Instruct-8B) |
 | [meta-llama/Llama-3.3-70B-Instruct](https://huggingface.co/meta-llama/Llama-3.3-70B-Instruct) | [yuhuili/EAGLE3-LLaMA3.3-Instruct-70B](https://huggingface.co/yuhuili/EAGLE3-LLaMA3.3-Instruct-70B) | [deepseek-ai/DeepSeek-R1-Distill-Llama-8B](https://huggingface.co/deepseek-ai/DeepSeek-R1-Distill-Llama-8B) | [yuhuili/EAGLE3-DeepSeek-R1-Distill-LLaMA-8B](https://huggingface.co/yuhuili/EAGLE3-DeepSeek-R1-Distill-LLaMA-8B) |
+| [meta-llama/Llama-4-Maverick-17B-128E-Instruct](https://huggingface.co/meta-llama/Llama-4-Maverick-17B-128E-Instruct)       | (NVIDIA's implementation, unofficial) [nvidia/Llama-4-Maverick-17B-128E-Eagle3](https://huggingface.co/nvidia/Llama-4-Maverick-17B-128E-Eagle3) |  |  |
 
 
 ## EAGLE Weights
@@ -202,24 +204,12 @@ output=model.tokenizer.decode(output_ids[0])
 
 ## Train
 
-### Generate Train Data
-You can run the following command to generate the training data.
 ```bash
-python -m eagle.ge_data.allocation --outdir [path of data]
+cd eagle/traineagle3
+deepspeed main.py --deepspeed_config ds_config.json
 ```
-### Train the Auto-regression Head
-```bash
-accelerate launch -m --mixed_precision=bf16 eagle.train.main --tmpdir [path of data]\
---cpdir [path of checkpoints] --configpath [path of config file]
-```
-*eagle/train* provides examples of configuration files.
 
-You can also use DeepSpeed for training.
 
-```bash
-cd eagle/train
-deepspeed main_deepspeed.py --deepspeed_config ds_config.json
-```
 
 ### Inference on custom models
 
