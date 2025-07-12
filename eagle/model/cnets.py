@@ -26,6 +26,7 @@ from typing import List, Optional, Tuple, Union
 import torch.nn.functional as F
 import torch.utils.checkpoint
 from torch import nn
+from fast_embedding import FastMultiEmbedding
 
 from transformers.activations import ACT2FN
 from huggingface_hub import hf_hub_download
@@ -602,7 +603,10 @@ class Model(nn.Module):
         past_key_values_length = 0
 
         with torch.no_grad():
-            inputs_embeds = self.embed_tokens(input_ids)
+            print(input_ids)
+            # Reference for below Code Line: https://github.com/RTBHOUSE/pytorch-fast-embedding?tab=readme-ov-file
+            inputs_embeds = FastMultiEmbedding(input_ids)
+            #inputs_embeds = self.embed_tokens(input_ids)
             # inputs_embeds = inputs_embeds.detach()
 
         # if std is not None:

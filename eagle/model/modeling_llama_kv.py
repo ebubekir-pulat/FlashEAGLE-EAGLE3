@@ -5,6 +5,7 @@
 """ PyTorch LLaMA model."""
 import math
 from typing import List, Optional, Tuple, Union
+from fast_embedding import FastMultiEmbedding
 
 import torch
 import torch.nn.functional as F
@@ -1105,7 +1106,10 @@ class LlamaModel(LlamaPreTrainedModel):
             position_ids = position_ids.view(-1, seq_length).long()
 
         if inputs_embeds is None:
-            inputs_embeds = self.embed_tokens(input_ids)
+            print(input_ids)
+            # Reference for below Code Line: https://github.com/RTBHOUSE/pytorch-fast-embedding?tab=readme-ov-file
+            inputs_embeds = FastMultiEmbedding(input_ids)
+            #inputs_embeds = self.embed_tokens(input_ids)
         # embed positions
         if attention_mask is None:
             attention_mask = torch.ones(
