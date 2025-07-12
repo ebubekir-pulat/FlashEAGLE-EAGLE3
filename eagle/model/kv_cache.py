@@ -126,7 +126,7 @@ def initialize_past_key_values(model,max_length=2200):
     # Initialize tensor to store the current length of the cached data for all layers.
     # [IMPORTANT] It needs to be kept on CPU for quick access and updates.
     current_length_data = torch.zeros(
-        config.num_hidden_layers * 2, dtype=torch.long, device="cpu"
+        config.num_hidden_layers * 2, dtype=torch.long, device="gpu"
     )
     # Creating a KVCache for each pair of key and value in all layers
     past_key_values = [] * config.num_hidden_layers
