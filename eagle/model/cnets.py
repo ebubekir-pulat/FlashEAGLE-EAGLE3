@@ -206,10 +206,11 @@ class LlamaAttention(nn.Module):
                 f"hidden_size must be divisible by num_heads (got `hidden_size`: {self.hidden_size}"
                 f" and `num_heads`: {self.num_heads})."
             )
-        self.q_proj = nn.Linear(self.hidden_size * 2, self.num_heads * self.head_dim, bias=False)
-        self.k_proj = nn.Linear(self.hidden_size * 2, self.num_key_value_heads * self.head_dim, bias=False)
-        self.v_proj = nn.Linear(self.hidden_size * 2, self.num_key_value_heads * self.head_dim, bias=False)
-        self.o_proj = nn.Linear(self.num_heads * self.head_dim, self.hidden_size, bias=False)
+        # Reference for below code block, for using kernel size = 1 in conv1d: https://medium.com/we-talk-data/implementing-a-fully-connected-layer-using-nn-conv2d-vs-nn-linear-in-pytorch-a-practical-guide-70b30b1e5dae 
+        self.q_proj = nn.conv1d(self.hidden_size * 2, self.num_heads * self.head_dim, 1, bias=False)
+        self.k_proj = nn.conv1d(self.hidden_size * 2, self.num_key_value_heads * self.head_dim, 1, bias=False)
+        self.v_proj = nn.conv1d(self.hidden_size * 2, self.num_key_value_heads * self.head_dim, 1, bias=False)
+        self.o_proj = nn.conv1d(self.num_heads * self.head_dim, self.hidden_size, 1, bias=False)
         self._init_rope()
 
     def _init_rope(self):
@@ -339,9 +340,10 @@ class LlamaMLP(nn.Module):
         self.config = config
         self.hidden_size = config.hidden_size
         self.intermediate_size = config.intermediate_size
-        self.gate_proj = nn.Linear(self.hidden_size, self.intermediate_size, bias=False)
-        self.up_proj = nn.Linear(self.hidden_size, self.intermediate_size, bias=False)
-        self.down_proj = nn.Linear(self.intermediate_size, self.hidden_size, bias=False)
+        # Reference for below code block, for using kernel size = 1 in conv1d: https://medium.com/we-talk-data/implementing-a-fully-connected-layer-using-nn-conv2d-vs-nn-linear-in-pytorch-a-practical-guide-70b30b1e5dae
+        self.gate_proj = nn.conv1d(self.hidden_size, self.intermediate_size, 1, bias=False)
+        self.up_proj = nn.conv1d(self.hidden_size, self.intermediate_size, 1, bias=False)
+        self.down_proj = nn.conv1d(self.intermediate_size, self.hidden_size, 1, bias=False)
         self.act_fn = ACT2FN[config.hidden_act]
 
     def forward(self, x):
@@ -484,7 +486,8 @@ class Model(nn.Module):
         self.vocab_size = config.vocab_size
 
         self.embed_tokens = nn.Embedding(config.vocab_size, config.hidden_size, self.padding_idx)
-        self.lm_head=nn.Linear(config.hidden_size,config.draft_vocab_size,bias=False)
+        # Reference for below code line, for using kernel size = 1 in conv1d: https://medium.com/we-talk-data/implementing-a-fully-connected-layer-using-nn-conv2d-vs-nn-linear-in-pytorch-a-practical-guide-70b30b1e5dae
+        self.lm_head=nn.conv1d(config.hidden_size,config.draft_vocab_size,1,bias=False)
         if load_emb and not hasattr(config, "target_hidden_size"):
             from safetensors import safe_open
             import json
@@ -529,9 +532,11 @@ class Model(nn.Module):
         self.hidden_size = config.hidden_size
         self.midlayer = LlamaDecoderLayeremb(config)
         if hasattr(config, "target_hidden_size"):
-            self.fc = nn.Linear(config.target_hidden_size * 3, self.hidden_size, bias=False)
+            # Reference for below code line, for using kernel size = 1 in conv1d: https://medium.com/we-talk-data/implementing-a-fully-connected-layer-using-nn-conv2d-vs-nn-linear-in-pytorch-a-practical-guide-70b30b1e5dae
+            self.fc = nn.conv1d(config.target_hidden_size * 3, self.hidden_size, 1, bias=False)
         else:
-            self.fc = nn.Linear(config.hidden_size * 3, self.hidden_size, bias=False)
+            # Reference for below code line, for using kernel size = 1 in conv1d: https://medium.com/we-talk-data/implementing-a-fully-connected-layer-using-nn-conv2d-vs-nn-linear-in-pytorch-a-practical-guide-70b30b1e5dae
+            self.fc = nn.conv1d(config.hidden_size * 3, self.hidden_size, 1, bias=False)
         self.norm=LlamaRMSNorm(config.hidden_size, eps=config.rms_norm_eps)
         self.logsoftmax = nn.LogSoftmax(dim=-1)
 

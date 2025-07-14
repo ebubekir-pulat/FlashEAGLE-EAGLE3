@@ -207,14 +207,16 @@ class LlamaAttention(nn.Module):
                 f" and `num_heads`: {self.num_heads})."
             )
         if hasattr(config, "qkv_bias"):
-            self.q_proj = nn.Linear(self.hidden_size, self.num_heads * self.head_dim, bias=config.qkv_bias)
-            self.k_proj = nn.Linear(self.hidden_size, self.num_key_value_heads * self.head_dim, bias=config.qkv_bias)
-            self.v_proj = nn.Linear(self.hidden_size, self.num_key_value_heads * self.head_dim, bias=config.qkv_bias)
+            # Reference for below code block, for using kernel size = 1 in conv1d: https://medium.com/we-talk-data/implementing-a-fully-connected-layer-using-nn-conv2d-vs-nn-linear-in-pytorch-a-practical-guide-70b30b1e5dae
+            self.q_proj = nn.conv1d(self.hidden_size, self.num_heads * self.head_dim, 1, bias=config.qkv_bias)
+            self.k_proj = nn.conv1d(self.hidden_size, self.num_key_value_heads * self.head_dim, 1, bias=config.qkv_bias)
+            self.v_proj = nn.conv1d(self.hidden_size, self.num_key_value_heads * self.head_dim, 1, bias=config.qkv_bias)
         else:
-            self.q_proj = nn.Linear(self.hidden_size, self.num_heads * self.head_dim, bias=False)
-            self.k_proj = nn.Linear(self.hidden_size, self.num_key_value_heads * self.head_dim, bias=False)
-            self.v_proj = nn.Linear(self.hidden_size, self.num_key_value_heads * self.head_dim, bias=False)
-        self.o_proj = nn.Linear(self.num_heads * self.head_dim, self.hidden_size, bias=False)
+            # Reference for below code block, for using kernel size = 1 in conv1d: https://medium.com/we-talk-data/implementing-a-fully-connected-layer-using-nn-conv2d-vs-nn-linear-in-pytorch-a-practical-guide-70b30b1e5dae
+            self.q_proj = nn.conv1d(self.hidden_size, self.num_heads * self.head_dim, 1, bias=False)
+            self.k_proj = nn.conv1d(self.hidden_size, self.num_key_value_heads * self.head_dim, 1, bias=False)
+            self.v_proj = nn.conv1d(self.hidden_size, self.num_key_value_heads * self.head_dim, 1, bias=False)
+        self.o_proj = nn.conv1d(self.num_heads * self.head_dim, self.hidden_size, bias=False)
         self._init_rope()
 
     def _init_rope(self):
@@ -344,9 +346,10 @@ class LlamaMLP(nn.Module):
         self.config = config
         self.hidden_size = config.hidden_size
         self.intermediate_size = config.intermediate_size
-        self.gate_proj = nn.Linear(self.hidden_size, self.intermediate_size, bias=False)
-        self.up_proj = nn.Linear(self.hidden_size, self.intermediate_size, bias=False)
-        self.down_proj = nn.Linear(self.intermediate_size, self.hidden_size, bias=False)
+        # Reference for below code block, for using kernel size = 1 in conv1d: https://medium.com/we-talk-data/implementing-a-fully-connected-layer-using-nn-conv2d-vs-nn-linear-in-pytorch-a-practical-guide-70b30b1e5dae
+        self.gate_proj = nn.conv1d(self.hidden_size, self.intermediate_size, 1, bias=False)
+        self.up_proj = nn.conv1d(self.hidden_size, self.intermediate_size, 1, bias=False)
+        self.down_proj = nn.conv1d(self.intermediate_size, self.hidden_size, 1, bias=False)
         self.act_fn = ACT2FN[config.hidden_act]
 
     def forward(self, x):
@@ -521,7 +524,8 @@ class Model(nn.Module):
         # print("threshold",threshold)
 
         self.layers = nn.ModuleList([LlamaDecoderLayer(config, index) for index in range(config.num_hidden_layers)])
-        self.fc = nn.Linear(2 * config.hidden_size, config.hidden_size, bias=bias)
+        # Reference for below code line, for using kernel size = 1 in conv1d: https://medium.com/we-talk-data/implementing-a-fully-connected-layer-using-nn-conv2d-vs-nn-linear-in-pytorch-a-practical-guide-70b30b1e5dae
+        self.fc = nn.conv1d(2 * config.hidden_size, config.hidden_size, 1, bias=bias)
         self.act = ACT2FN[config.hidden_act]
         self.logsoftmax = nn.LogSoftmax(dim=-1)
         for param in self.embed_tokens.parameters():

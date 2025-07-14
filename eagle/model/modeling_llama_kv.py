@@ -493,9 +493,10 @@ class LlamaMLP(nn.Module):
         self.pretraining_tp = config.pretraining_tp
         self.hidden_size = config.hidden_size
         self.intermediate_size = config.intermediate_size
-        self.gate_proj = nn.Linear(self.hidden_size, self.intermediate_size, bias=False)
-        self.up_proj = nn.Linear(self.hidden_size, self.intermediate_size, bias=False)
-        self.down_proj = nn.Linear(self.intermediate_size, self.hidden_size, bias=False)
+        # Reference for below code block, for using kernel size = 1 in conv1d: https://medium.com/we-talk-data/implementing-a-fully-connected-layer-using-nn-conv2d-vs-nn-linear-in-pytorch-a-practical-guide-70b30b1e5dae
+        self.gate_proj = nn.conv1d(self.hidden_size, self.intermediate_size, 1, bias=False)
+        self.up_proj = nn.conv1d(self.hidden_size, self.intermediate_size, 1, bias=False)
+        self.down_proj = nn.conv1d(self.intermediate_size, self.hidden_size, 1, bias=False)
         self.act_fn = ACT2FN[config.hidden_act]
 
     def forward(self, x):
@@ -590,16 +591,17 @@ class LlamaAttention(nn.Module):
                 f"hidden_size must be divisible by num_heads (got `hidden_size`: {self.hidden_size}"
                 f" and `num_heads`: {self.num_heads})."
             )
-        self.q_proj = nn.Linear(
+        # Reference for below code block, for using kernel size = 1 in conv1d: https://medium.com/we-talk-data/implementing-a-fully-connected-layer-using-nn-conv2d-vs-nn-linear-in-pytorch-a-practical-guide-70b30b1e5dae
+        self.q_proj = nn.conv1d(
             self.hidden_size, self.num_heads * self.head_dim, bias=False
         )
-        self.k_proj = nn.Linear(
+        self.k_proj = nn.conv1d(
             self.hidden_size, self.num_key_value_heads * self.head_dim, bias=False
         )
-        self.v_proj = nn.Linear(
+        self.v_proj = nn.conv1d(
             self.hidden_size, self.num_key_value_heads * self.head_dim, bias=False
         )
-        self.o_proj = nn.Linear(
+        self.o_proj = nn.conv1d(
             self.num_heads * self.head_dim, self.hidden_size, bias=False
         )
         self._init_rope()
@@ -1208,7 +1210,8 @@ class LlamaForCausalLM(LlamaPreTrainedModel):
         self.model = LlamaModel(config)
         self.pretraining_tp = config.pretraining_tp
         self.vocab_size = config.vocab_size
-        self.lm_head = nn.Linear(config.hidden_size, config.vocab_size, bias=False)
+        # Reference for below code line, for using kernel size = 1 in conv1d: https://medium.com/we-talk-data/implementing-a-fully-connected-layer-using-nn-conv2d-vs-nn-linear-in-pytorch-a-practical-guide-70b30b1e5dae
+        self.lm_head = nn.conv1d(config.hidden_size, config.vocab_size, 1, bias=False)
 
         # Initialize weights and apply final processing
         self.post_init()
@@ -1408,7 +1411,8 @@ class LlamaForSequenceClassification(LlamaPreTrainedModel):
         super().__init__(config)
         self.num_labels = config.num_labels
         self.model = LlamaModel(config)
-        self.score = nn.Linear(config.hidden_size, self.num_labels, bias=False)
+        # Reference for below code line, for using kernel size = 1 in conv1d: https://medium.com/we-talk-data/implementing-a-fully-connected-layer-using-nn-conv2d-vs-nn-linear-in-pytorch-a-practical-guide-70b30b1e5dae
+        self.score = nn.conv1d(config.hidden_size, self.num_labels, 1, bias=False)
 
         # Initialize weights and apply final processing
         self.post_init()
