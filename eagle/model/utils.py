@@ -365,11 +365,7 @@ def evaluate_posterior(
         candidates_accept_length = (torch.cumprod(posterior_mask, dim=1)).sum(dim=1)
         accept_length = candidates_accept_length.max()
         # Choose the best candidate
-        if accept_length == 0:
-            # Default to the first candidate if none are accepted
-            best_candidate = torch.tensor(0, dtype=torch.long, device=candidates.device)
-        else:
-            best_candidate = torch.argmax(candidates_accept_length).to(torch.long)
+        best_candidate = torch.argmax(candidates_accept_length).to(torch.long)
         return best_candidate, accept_length, logits[best_candidate, accept_length]
 
     else:
