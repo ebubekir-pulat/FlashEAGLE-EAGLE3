@@ -241,7 +241,7 @@ class EaModel(nn.Module):
         reset_tree_mode(self)
         # prefill
         draft_tokens, retrieve_indices, tree_mask, tree_position_ids, logits, hidden_state, sample_token = initialize_tree(
-            summ_input_ids, self, past_key_values, logits_processor
+            input_ids, self, past_key_values, logits_processor
         )
         new_token = 0
         max_length = max_length - self.ea_layer.total_tokens - 10
@@ -270,7 +270,7 @@ class EaModel(nn.Module):
             # print(accept_length)
             # Adjusting the input sequence, draft model forward
             input_ids, draft_tokens, retrieve_indices, tree_mask, tree_position_ids, new_token, hidden_state, sample_token = update_inference_inputs(
-                summ_input_ids,
+                input_ids,
                 candidates,
                 best_candidate,
                 accept_length,
