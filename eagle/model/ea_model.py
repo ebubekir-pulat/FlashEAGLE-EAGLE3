@@ -203,7 +203,7 @@ class EaModel(nn.Module):
             max_length=2048,
             log=False,
             is_llama3=False,
-
+            summ_input_ids=None
     ):
         if is_llama3:
             stop_token_id = self.tokenizer.convert_tokens_to_ids("<|eot_id|>")
@@ -241,7 +241,7 @@ class EaModel(nn.Module):
         reset_tree_mode(self)
         # prefill
         draft_tokens, retrieve_indices, tree_mask, tree_position_ids, logits, hidden_state, sample_token = initialize_tree(
-            input_ids, self, past_key_values, logits_processor
+            summ_input_ids, self, past_key_values, logits_processor
         )
         new_token = 0
         max_length = max_length - self.ea_layer.total_tokens - 10
@@ -270,7 +270,7 @@ class EaModel(nn.Module):
             # print(accept_length)
             # Adjusting the input sequence, draft model forward
             input_ids, draft_tokens, retrieve_indices, tree_mask, tree_position_ids, new_token, hidden_state, sample_token = update_inference_inputs(
-                input_ids,
+                summ_input_ids,
                 candidates,
                 best_candidate,
                 accept_length,
