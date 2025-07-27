@@ -6,7 +6,7 @@ from transformers import pipeline
 summariser = pipeline(
     "summarization",
     "pszemraj/long-t5-tglobal-base-16384-book-summary",
-    device=0 if torch.cuda.is_available() else -1,
+    device=0,
 )
 
 # typing 
