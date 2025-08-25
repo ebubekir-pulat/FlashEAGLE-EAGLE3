@@ -436,7 +436,8 @@ def update_inference_inputs(
         current_length_data,
         model,
         hidden_state_new,
-        sample_p
+        sample_p,
+        summarised_input=None
 ):
     prev_input_len = input_ids.shape[1]
     # Map the best candidate indices to the original indices in the sequence
@@ -472,9 +473,9 @@ def update_inference_inputs(
         token = token[None, None]
 
     # Below Code Line From: https://github.com/SafeAILab/EAGLE
-    input_decoded = model.tokenizer.decode(input_ids)
+    #input_decoded = model.tokenizer.decode(input_ids)
     # Below Code Line From: https://huggingface.co/pszemraj/long-t5-tglobal-base-16384-book-summary
-    summarised_input = summariser(input_decoded)[0]["summary_text"]
+    #summarised_input = summariser(input_decoded)[0]["summary_text"]
     # Below Code Block From: https://github.com/SafeAILab/EAGLE
     input_ids=model.tokenizer(summarised_input).input_ids
     input_ids = torch.as_tensor(input_ids).cuda()
