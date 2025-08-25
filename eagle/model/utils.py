@@ -482,7 +482,7 @@ def update_inference_inputs(
 
     # hidden_state = torch.cat((hidden_state, accept_hidden_state_new), dim=1)
     draft_tokens, retrieve_indices,tree_mask,tree_position_ids = model.ea_layer.topK_genrate(accept_hidden_state_new,
-                                              input_ids=torch.cat((input_ids, token.to(input_ids.device)), dim=1),
+                                              input_ids=torch.cat((input_ids, token.to(input_ids.device)), dim=0),
                                               head=model.base_model.lm_head,logits_processor=logits_processor)
 
 
