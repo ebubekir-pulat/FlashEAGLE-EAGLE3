@@ -71,11 +71,16 @@ _Inference is conducted on 2x RTX 3090 GPUs at fp16 precision using the Vicuna 1
 EAGLE has been merged in the following mainstream LLM serving frameworks (listed in alphabetical order).
 
 - <a href="https://rocm.docs.amd.com/en/latest/">AMD ROCm</a>
+- <a href="https://angelslim.readthedocs.io/zh-cn/latest/features/speculative_decoding/eagle.html">AngelSlim</a>
 - <a href="https://awsdocs-neuron.readthedocs-hosted.com/en/latest/libraries/nxd-inference/developer_guides/feature-guide.html#eagle-speculative-decoding">AWS NeuronX Distributed Core</a>
+- <a href="https://github.com/OpenBMB/CPM.cu">CPM.cu</a>
 - <a href="https://github.com/intel/intel-extension-for-transformers/pull/1504">Intel® Extension for Transformers</a>
 - <a href="https://github.com/intel-analytics/ipex-llm/pull/11104">Intel® LLM Library for PyTorch</a>
 - <a href="https://llm.mlc.ai/docs/deploy/rest.html">MLC-LLM</a>
+- <a href="https://docs.nvidia.com/nemo-framework/user-guide/latest/model-optimization/speculative/speculative.html">NVIDIA NeMo Framework</a>
 - <a href="https://github.com/NVIDIA/TensorRT-LLM/tree/main/examples/eagle">NVIDIA TensorRT-LLM</a>
+- <a href="https://nvidia.github.io/TensorRT-Model-Optimizer/guides/7_speculative_decoding.html">NVIDIA TensorRT Model Optimizer</a>
+- <a href="https://paddlenlp.readthedocs.io/en/latest/llm/docs/predict/speculative_decoding.html">PaddleNLP</a>
 - <a href="https://docs.sglang.ai/advanced_features/speculative_decoding.html">SGLang</a>
 - <a href="https://github.com/sgl-project/SpecForge">SpecForge</a>
 - <a href="https://github.com/vllm-project/vllm/pull/16937">vLLM</a>
@@ -149,6 +154,11 @@ pip install -r requirements.txt
 | [Qwen/Qwen3-8B](https://huggingface.co/Qwen/Qwen3-8B)    | [AngelSlim/Qwen3-8B_eagle3](https://huggingface.co/AngelSlim/Qwen3-8B_eagle3) | [Qwen/Qwen3-30B-A3B](https://huggingface.co/Qwen/Qwen3-30B-A3B)    | [AngelSlim/Qwen3-a3B_eagle3](https://huggingface.co/AngelSlim/Qwen3-a3B_eagle3) |
 | [Qwen/Qwen3-4B](https://huggingface.co/Qwen/Qwen3-4B)    | [AngelSlim/Qwen3-4B_eagle3](https://huggingface.co/AngelSlim/Qwen3-4B_eagle3) | [Qwen/Qwen3-32B](https://huggingface.co/Qwen/Qwen3-32B)    | [AngelSlim/Qwen3-32B_eagle3](https://huggingface.co/AngelSlim/Qwen3-32B_eagle3) |
 | [Qwen/Qwen3-1.7B](https://huggingface.co/Qwen/Qwen3-1.7B)    | [AngelSlim/Qwen3-1.7B_eagle3](https://huggingface.co/AngelSlim/Qwen3-1.7B_eagle3) | [Qwen/Qwen3-14B](https://huggingface.co/Qwen/Qwen3-14B)    | [AngelSlim/Qwen3-14B_eagle3](https://huggingface.co/AngelSlim/Qwen3-14B_eagle3) |
+| [Qwen/Qwen3-235B-A22B](https://huggingface.co/Qwen/Qwen3-235B-A22B)    | [nvidia/Qwen3-235B-A22B-Eagle3](https://huggingface.co/nvidia/Qwen3-235B-A22B-Eagle3) |  |  |
+| [openbmb/MiniCPM4-8B](https://huggingface.co/openbmb/MiniCPM4-8B)    | [linglingdan/Eagle3_for_MiniCPM4](https://modelscope.cn/models/linglingdan/Eagle3_for_MiniCPM4) | [allenai/OLMoE-1B-7B-0125-Instruct](https://huggingface.co/allenai/OLMoE-1B-7B-0125-Instruct)     |  [wantsleep/OLMoE_1B_7B_Eagle3](https://huggingface.co/wantsleep/OLMoE_1B_7B_Eagle3) |
+| [openai/gpt-oss-120b](https://huggingface.co/openai/gpt-oss-120b)    | [lmsys/EAGLE3-gpt-oss-120b-bf16](https://huggingface.co/lmsys/EAGLE3-gpt-oss-120b-bf16) | [openai/gpt-oss-120b](https://huggingface.co/openai/gpt-oss-120b)    | [nvidia/gpt-oss-120b-Eagle3](https://huggingface.co/nvidia/gpt-oss-120b-Eagle3) |
+ 
+
 
 
 ## EAGLE Weights
