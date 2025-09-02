@@ -1,13 +1,6 @@
 import copy
 import random
-from transformers import pipeline
 
-# Below Code Block From: https://huggingface.co/pszemraj/long-t5-tglobal-base-16384-book-summary
-summariser = pipeline(
-    "summarization",
-    "pszemraj/long-t5-tglobal-base-16384-book-summary",
-    device=0,
-)
 
 # typing 
 from typing import List, Tuple
@@ -472,17 +465,9 @@ def update_inference_inputs(
         token = torch.argmax(prob)
         token = token[None, None]
 
-    # Below Code Line From: https://github.com/SafeAILab/EAGLE
-    #input_decoded = model.tokenizer.decode(input_ids)
-    # Below Code Line From: https://huggingface.co/pszemraj/long-t5-tglobal-base-16384-book-summary
-    #summarised_input = summariser(input_decoded)[0]["summary_text"]
-    # Below Code Block From: https://github.com/SafeAILab/EAGLE
-    input_ids=model.tokenizer(summarised_input).input_ids
-    input_ids = torch.as_tensor(input_ids).cuda()
-
     # hidden_state = torch.cat((hidden_state, accept_hidden_state_new), dim=1)
     draft_tokens, retrieve_indices,tree_mask,tree_position_ids = model.ea_layer.topK_genrate(accept_hidden_state_new,
-                                              input_ids=torch.cat((input_ids, token.to(input_ids.device)), dim=0),
+                                              input_ids=torch.cat((input_ids, token.to(input_ids.device)), dim=1),
                                               head=model.base_model.lm_head,logits_processor=logits_processor)
 
 

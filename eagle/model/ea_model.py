@@ -203,7 +203,7 @@ class EaModel(nn.Module):
             max_length=2048,
             log=False,
             is_llama3=False,
-            summ_q=None
+            summ_input_ids=None
     ):
         if is_llama3:
             stop_token_id = self.tokenizer.convert_tokens_to_ids("<|eot_id|>")
@@ -218,6 +218,10 @@ class EaModel(nn.Module):
 
         padding = (torch.zeros(1, 1, dtype=torch.long) - 1).to(input_ids.device)
         input_ids = input_ids.clone()
+
+        padding = (torch.zeros(1, 1, dtype=torch.long) - 1).to(summ_input_ids.device)
+        summ_input_ids = summ_input_ids.clone()
+
         self.ea_layer.reset_kv()
 
         # Initialize the past key and value states
@@ -282,7 +286,7 @@ class EaModel(nn.Module):
                 self,
                 hidden_state_new,
                 sample_p,
-                summ_q
+                summ_input_ids
             )
 
             if is_llama3:
