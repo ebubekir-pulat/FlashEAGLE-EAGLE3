@@ -41,8 +41,8 @@ def prepare_logits_processor(
         top_p: float = 0.0,
         top_k: int = 0
 ) -> LogitsProcessorList:
-    temperature = 0.5
-    repetition_penalty = 0.5
+    temperature = 1.0
+    repetition_penalty = 5
     processor_list = LogitsProcessorList()
     if temperature > 1e-5:
         if temperature >= 1e-5 and temperature != 1.0:
