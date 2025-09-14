@@ -259,6 +259,9 @@ class EaModel(nn.Module):
             print(np.shape(self.past_key_values[0][0].data))
             #print("\n\n", self.past_key_values_data[0])
 
+            a, b, c, d = np.shape(self.past_key_values[0][0].data)
+            #for i in range(len(self.past_key_values[0][0].data)):
+
 
 
             # with Timer("all"):
