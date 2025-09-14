@@ -253,7 +253,9 @@ class EaModel(nn.Module):
             #print("Lens: ", self.current_length_data[0], end="\n\n\n")
             max_kv = max(max_kv, int(self.current_length_data[0]))
             print(sys.getsizeof(self.past_key_values[0][0]))
+            print(self.past_key_values[0])
             print(self.past_key_values[0][0])
+            print(self.past_key_values[0][0][0])
             #print("\n\n", self.past_key_values_data[0])
 
 
