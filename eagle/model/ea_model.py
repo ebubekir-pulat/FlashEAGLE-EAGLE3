@@ -262,6 +262,11 @@ class EaModel(nn.Module):
             a, b, c, d = np.shape(self.past_key_values[0][0].data)
             print(f"{a} {b} {c} {d}")
             #for i in range(len(self.past_key_values[0][0].data)):
+            for i in range(a):
+                for j in range(b):
+                    for k in range(c):
+                        for l in range(d):
+                            self.past_key_values[0][0].data[a][b][c][d] = 0
 
 
 
