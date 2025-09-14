@@ -301,7 +301,7 @@ class EaModel(nn.Module):
             if input_ids.shape[1] > max_length:
                 break
         if not log:
-            print("MAX KV: ", max_kv)
+            #print("MAX KV: ", max_kv)
             return input_ids
         else:
             print("MAX KV: ", max_kv)
