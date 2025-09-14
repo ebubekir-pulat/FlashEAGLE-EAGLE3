@@ -2,6 +2,7 @@ import copy
 import json
 import time
 import sys
+from random import sample
 
 import numpy as np
 import torch
@@ -260,9 +261,9 @@ class EaModel(nn.Module):
             #print(self.past_key_values_data[0].shape)
             #print(sys.getsizeof(self.past_key_values_data))
             #print(len(self.past_key_values_data))
-            if len(self.past_key_values_data) > 1:    
-                self.past_key_values_data = [self.past_key_values_data[0]]
-                self.past_key_values_data[0] = self.past_key_values_data[0][:100]
+            #if len(self.past_key_values_data) > 1:    
+            #    self.past_key_values_data = [self.past_key_values_data[0]]
+            #    self.past_key_values_data[0] = self.past_key_values_data[0][:100]
             #print(sys.getsizeof(self.past_key_values_data))
             #print(len(self.past_key_values_data))
             #if len(self.past_key_values) == 2:
@@ -270,6 +271,8 @@ class EaModel(nn.Module):
             #else:
             #    self.past_key_values = [self.past_key_values[0]]
 
+            self.past_key_values_data[0] = sample(self.past_key_values_data[0], 100)
+            self.past_key_values_data[1] = sample(self.past_key_values_data[1], 100)
 
 
             # with Timer("all"):
