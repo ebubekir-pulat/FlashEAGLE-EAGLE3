@@ -249,7 +249,7 @@ class EaModel(nn.Module):
         max_kv = 0
 
         for idx in range(max_length):
-            print(self.current_length_data)
+            print("Lens: ", self.current_length_data[0], end="\n\n\n")
             #max_kv = max(max_kv, )
 
             # with Timer("all"):
