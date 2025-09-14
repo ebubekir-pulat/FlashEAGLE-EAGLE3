@@ -3,6 +3,7 @@ import json
 import time
 import sys
 
+import numpy as np
 import torch
 import torch.nn as nn
 from huggingface_hub import hf_hub_download
@@ -255,7 +256,7 @@ class EaModel(nn.Module):
             print(sys.getsizeof(self.past_key_values[0][0]))
             print(self.past_key_values[0])
             print(self.past_key_values[0][0])
-            print(self.past_key_values[0][0].data)
+            print(np.shape(self.past_key_values[0][0].data))
             #print("\n\n", self.past_key_values_data[0])
 
 
