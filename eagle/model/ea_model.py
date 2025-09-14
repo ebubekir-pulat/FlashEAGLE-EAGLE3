@@ -255,7 +255,7 @@ class EaModel(nn.Module):
             print(sys.getsizeof(self.past_key_values[0][0]))
             print(self.past_key_values[0])
             print(self.past_key_values[0][0])
-            print(self.past_key_values[0][0][0])
+            print(self.past_key_values[0][0].data)
             #print("\n\n", self.past_key_values_data[0])
 
 
