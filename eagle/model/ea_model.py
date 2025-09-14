@@ -14,7 +14,7 @@ from .modeling_mixtral_kv import MixtralForCausalLM as KVMixtralForCausalLM
 #from .modeling_qwen2_kv import LlamaForCausalLM as KVQwen2ForCausalLM
 from .modeling_qwen2_kv import Qwen2ForCausalLM as KVQwen2ForCausalLM
 from .utils import *
-from .kv_cache import initialize_past_key_values, info
+from .kv_cache import initialize_past_key_values
 
 from .cnets import Model
 from .cnets1 import Model as Model1
@@ -249,7 +249,7 @@ class EaModel(nn.Module):
         max_kv = 0
 
         for idx in range(max_length):
-            max_kv = max(max_kv, int(info()))
+            max_kv = max(max_kv, int(self.past_key_values.info()))
 
             # with Timer("all"):
             self.base_model.model.tree_mask = tree_mask
