@@ -258,7 +258,7 @@ class EaModel(nn.Module):
             print(self.past_key_values[0][0])
             print(np.shape(self.past_key_values[0][0].data))
             print(self.past_key_values_data[0].shape)
-
+            print(sys.getsizeof(self.past_key_values_data))
             self.past_key_values_data = self.past_key_values_data[:5]
             print(sys.getsizeof(self.past_key_values_data))
             if len(self.past_key_values) == 2:
