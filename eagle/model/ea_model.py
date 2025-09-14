@@ -254,19 +254,9 @@ class EaModel(nn.Module):
             #print("Lens: ", self.current_length_data[0], end="\n\n\n")
             max_kv = max(max_kv, int(self.current_length_data[0]))
             print(sys.getsizeof(self.past_key_values[0][0]))
-            print(self.past_key_values[0])
-            print(self.past_key_values[0][0])
+            print(len(past_key_values[0]))
+            print(len(self.past_key_values[0][0]))
             print(np.shape(self.past_key_values[0][0].data))
-            #print("\n\n", self.past_key_values_data[0])
-
-            a, b, c, d = np.shape(self.past_key_values[0][0].data)
-            print(f"{a} {b} {c} {d}")
-            #for i in range(len(self.past_key_values[0][0].data)):
-            for i in range(a):
-                for j in range(b // 2):
-                    for k in range(c // 2):
-                        for l in range(d // 2):
-                            self.past_key_values[0][0].data[i][j][k][l] = 0
 
 
 
