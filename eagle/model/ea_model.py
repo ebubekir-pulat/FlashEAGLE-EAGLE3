@@ -249,8 +249,8 @@ class EaModel(nn.Module):
         max_kv = 0
 
         for idx in range(max_length):
-            print("Lens: ", self.current_length_data[0], end="\n\n\n")
-            #max_kv = max(max_kv, )
+            #print("Lens: ", self.current_length_data[0], end="\n\n\n")
+            max_kv = max(max_kv, int(self.current_length_data[0]))
 
             # with Timer("all"):
             self.base_model.model.tree_mask = tree_mask
