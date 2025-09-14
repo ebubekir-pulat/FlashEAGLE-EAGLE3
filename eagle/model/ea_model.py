@@ -257,7 +257,7 @@ class EaModel(nn.Module):
             print(self.past_key_values[0])
             print(self.past_key_values[0][0])
             print(np.shape(self.past_key_values[0][0].data))
-            self.past_key_values = [self.past_key_values[0]]
+            #self.past_key_values = [self.past_key_values[0]]
 
 
 
