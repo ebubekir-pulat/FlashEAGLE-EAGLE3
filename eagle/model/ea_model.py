@@ -14,7 +14,7 @@ from .modeling_mixtral_kv import MixtralForCausalLM as KVMixtralForCausalLM
 #from .modeling_qwen2_kv import LlamaForCausalLM as KVQwen2ForCausalLM
 from .modeling_qwen2_kv import Qwen2ForCausalLM as KVQwen2ForCausalLM
 from .utils import *
-from .kv_cache import initialize_past_key_values
+from .kv_cache import initialize_past_key_values, info
 
 from .cnets import Model
 from .cnets1 import Model as Model1
@@ -245,7 +245,12 @@ class EaModel(nn.Module):
         )
         new_token = 0
         max_length = max_length - self.ea_layer.total_tokens - 10
+
+        max_kv = 0
+
         for idx in range(max_length):
+            max_kv = max(max_kv, int(info()))
+
             # with Timer("all"):
             self.base_model.model.tree_mask = tree_mask
 
@@ -295,8 +300,10 @@ class EaModel(nn.Module):
             if input_ids.shape[1] > max_length:
                 break
         if not log:
+            print("MAX KV: ", max_kv)
             return input_ids
         else:
+            print("MAX KV: ", max_kv)
             return input_ids, new_token, idx
 
     @torch.no_grad()

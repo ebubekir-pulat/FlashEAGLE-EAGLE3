@@ -27,9 +27,9 @@ class KVCache:
 
     @property
     def shape(self):
-        print("\n\nData Len: ", len(self.data))
-        print("Data Len: ", self.current_length)
-        print(self.data)
+        #print("\n\nData Len: ", len(self.data))
+        #print("Data Len: ", self.current_length)
+        #print(self.data)
 
         """Return the shape of the data tensor with updated length."""
         return (
@@ -38,6 +38,9 @@ class KVCache:
             self.current_length.item(),
             self.data.shape[3],
         )
+    
+    def info(self):
+        return self.current_length
 
     def copy(self, indices: torch.Tensor, prev_length: int, dim: int = 2):
         """
