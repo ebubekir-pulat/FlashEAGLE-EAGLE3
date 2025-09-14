@@ -266,7 +266,7 @@ class EaModel(nn.Module):
                 for j in range(b):
                     for k in range(c):
                         for l in range(d):
-                            self.past_key_values[0][0].data[a][b][c][d] = 0
+                            self.past_key_values[0][0].data[i][j][k][l] = 0
 
 
 
