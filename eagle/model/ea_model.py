@@ -271,8 +271,9 @@ class EaModel(nn.Module):
             #else:
             #    self.past_key_values = [self.past_key_values[0]]
             #print(len(self.past_key_values_data[0]))
-            #self.past_key_values_data[0] = self.past_key_values_data[0][:10]
-            #self.past_key_values_data[1] = self.past_key_values_data[1][:10]
+            
+            self.past_key_values_data[0] = self.past_key_values_data[0][:5]
+            self.past_key_values_data[1] = self.past_key_values_data[1][:5]
 
 
             # with Timer("all"):
