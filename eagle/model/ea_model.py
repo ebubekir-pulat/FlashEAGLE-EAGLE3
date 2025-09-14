@@ -274,8 +274,8 @@ class EaModel(nn.Module):
             #print(len(self.past_key_values_data[0]))
             
             #val = rd.randint(1, 5)
-            self.past_key_values_data[0] = self.past_key_values_data[0][:5]
-            self.past_key_values_data[1] = self.past_key_values_data[1][:5]
+            #self.past_key_values_data[0] = self.past_key_values_data[0][:5]
+            #self.past_key_values_data[1] = self.past_key_values_data[1][:5]
 
 
             # with Timer("all"):
