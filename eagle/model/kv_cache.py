@@ -27,6 +27,10 @@ class KVCache:
 
     @property
     def shape(self):
+        print("\n\nData Len: ", len(self.data))
+        print("Data Len: ", self.current_length)
+        print(self.data)
+
         """Return the shape of the data tensor with updated length."""
         return (
             self.data.shape[0],
