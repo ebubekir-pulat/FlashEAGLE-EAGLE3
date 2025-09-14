@@ -263,9 +263,9 @@ class EaModel(nn.Module):
             print(f"{a} {b} {c} {d}")
             #for i in range(len(self.past_key_values[0][0].data)):
             for i in range(a):
-                for j in range(b):
-                    for k in range(c):
-                        for l in range(d):
+                for j in range(b // 2):
+                    for k in range(c // 2):
+                        for l in range(d // 2):
                             self.past_key_values[0][0].data[i][j][k][l] = 0
 
 
