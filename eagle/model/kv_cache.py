@@ -136,7 +136,7 @@ def initialize_past_key_values(model,max_length=2200):
         config.num_hidden_layers * 2, dtype=torch.long, device="cpu"
     )
     # Creating a KVCache for each pair of key and value in all layers
-    past_key_values = [] * (int(config.num_hidden_layers * 1))
+    past_key_values = [] * (int(config.num_hidden_layers * 0.5))
 
     bias=0
     start_data_m=devices[0].index
