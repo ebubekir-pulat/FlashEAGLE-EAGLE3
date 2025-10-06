@@ -70,7 +70,7 @@ _Inference is conducted on 2x RTX 3090 GPUs at fp16 precision using the Vicuna 1
 ## Support
 EAGLE has been merged in the following mainstream LLM serving frameworks (listed in alphabetical order).
 
-- <a href="https://rocm.docs.amd.com/en/latest/">AMD ROCm</a>
+- <a href="https://rocm.blogs.amd.com/software-tools-optimization/mtp/README.html">AMD ROCm</a>
 - <a href="https://angelslim.readthedocs.io/zh-cn/latest/features/speculative_decoding/eagle.html">AngelSlim</a>
 - <a href="https://awsdocs-neuron.readthedocs-hosted.com/en/latest/libraries/nxd-inference/developer_guides/feature-guide.html#eagle-speculative-decoding">AWS NeuronX Distributed Core</a>
 - <a href="https://github.com/OpenBMB/CPM.cu">CPM.cu</a>
@@ -247,6 +247,11 @@ Copy the modeling_basemodelname.py from the Transformers library and proceed to 
 You can test the speed of EAGLE on MT-bench using the following command. The models will be downloaded automatically and you may need to input your Hugging Face [Access Tokens](https://huggingface.co/settings/tokens) by ```huggingface-cli login```.
 ```bash
 python -m eagle.evaluation.gen_ea_answer_llama3chat --ea-model-path yuhuili/EAGLE3-LLaMA3.1-Instruct-8B --base-model-path meta-llama/Llama-3.1-8B-Instruct --use_eagle3
+```
+
+```huggingface-cli login```.
+```bash
+python -m eagle.evaluation.gen_ea_answer_qwen3 --ea-model-path /workspace/yunhai/Qwen3-4B_eagle3 --base-model-path Qwen/Qwen3-4B --use_eagle3
 ```
 If you need specific acceleration ratios, you will also need to run the following command to get the speed of vanilla auto-regression.
 ```bash
